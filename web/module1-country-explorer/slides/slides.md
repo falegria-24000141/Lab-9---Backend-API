@@ -4,7 +4,7 @@ theme: default
 paginate: true
 backgroundColor: #fff
 style: |
-  section { font-family: 'Inter', sans-serif; }
+  section { font-family: 'Inter', sans-serif; padding: 25px 50px; }
   h1 { color: #1A477B; }
   h2 { color: #000000; }
   code { background-color: #f0f0f0; padding: 0.2em; border-radius: 4px; }
@@ -44,7 +44,7 @@ We are building a Country Explorer that fetches data from a public API.
 
 ---
 
-![height:500px center](assets/app_screenshot.png)
+![height:500px center](../assets/image.png)
 
 ---
 
@@ -396,7 +396,8 @@ Modern way to make HTTP requests in the browser.
 // Basic GET request
 const response = await fetch('https://restcountries.com/v3.1/all');
 const countries: Country[] = await response.json();
-
+```
+```typescript
 // With error handling
 try {
     const response = await fetch(url);
@@ -422,6 +423,8 @@ fetch(url)
     .then(data => console.log(data))
     .catch(error => console.error(error));
 
+```
+```typescript
 // Async/Await (modern way)
 async function fetchCountries(): Promise<Country[]> {
     const response = await fetch(url);
@@ -532,7 +535,7 @@ TypeScript doesn't run in the browser. It compiles to JavaScript.
 
 ```text
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   main.ts       │ ──▶ │   TypeScript    │ ──▶ │   main.js       │
+│   main.ts       │ ──> │   TypeScript    │ ──> │   main.js       │
 │   (Source)      │     │   Compiler      │     │   (Output)      │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
 ```
@@ -549,21 +552,21 @@ JavaScript is single-threaded but handles async with the Event Loop.
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
-│                         Event Loop                               │
+│                         Event Loop                              │
 ├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  [Call Stack]        [Web APIs]        [Callback Queue]          │
-│       │                  │                   │                   │
-│  console.log()           │                   │                   │
-│       │                  │                   │                   │
-│  fetch() ────────────▶ Network              │                   │
-│       │                  │                   │                   │
-│  (continues)             │                   │                   │
-│       │                  │                   │                   │
-│       │              Response ──────────▶ callback              │
-│       │                                      │                   │
-│  (stack empty) ◀─────────────────────────────┘                  │
-│                                                                  │
+│                                                                 │
+│  [Call Stack]        [Web APIs]        [Callback Queue]         │
+│       │                  │                   │                  │
+│  console.log()           │                   │                  │
+│       │                  │                   │                  │
+│  fetch() ────────────> Network               │                  │
+│       │                  │                   │                  │
+│  (continues)             │                   │                  │
+│       │                  │                   │                  │
+│       │              Response ──────────> callback              │
+│       │                                      │                  │
+│  (stack empty) <─────────────────────────────┘                  │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -623,13 +626,13 @@ Vite is a modern build tool optimized for speed.
 
 **Development:**
 ```text
-Browser ──▶ Vite Dev Server ──▶ On-demand transform ──▶ Source files
-         (HMR enabled)        (esbuild for TS)
+Browser ──> Vite Dev Server ──> On-demand transform ──> Source files
+            (HMR enabled)        (esbuild for TS)
 ```
 
 **Production:**
 ```text
-Source files ──▶ Rollup bundler ──▶ Optimized bundle
+Source files ──> Rollup bundler ──> Optimized bundle
               (Tree shaking, minification, code splitting)
 ```
 
@@ -656,6 +659,8 @@ Add a dropdown filter that:
 - Filters countries by selected region
 - Works in combination with the search input
 - Shows "All Regions" option to reset
+
+---
 
 **Files to Modify:**
 - `index.html` (add dropdown)
@@ -689,6 +694,8 @@ Implement a favorites feature that:
 - Stores favorites in localStorage
 - Shows a "Favorites Only" toggle
 - Persists across page reloads
+
+---
 
 **Files to Create/Modify:**
 - `utils/storage.ts` (localStorage helper)
@@ -728,6 +735,10 @@ Implement a favorites feature that:
 *   [MDN Web Docs: DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
 *   [MDN: Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 *   [JavaScript.info: Document](https://javascript.info/document)
+
+---
+
+## Resources
 
 **Tailwind CSS**
 *   [Tailwind CSS Documentation](https://tailwindcss.com/docs)

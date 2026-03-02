@@ -4,7 +4,7 @@ theme: default
 paginate: true
 backgroundColor: #fff
 style: |
-  section { font-family: 'Inter', sans-serif; }
+  section { font-family: 'Inter', sans-serif; padding: 30px; }
   h1 { color: #1A477B; }
   h2 { color: #000000; }
   code { background-color: #f0f0f0; padding: 0.2em; border-radius: 4px; }
@@ -213,9 +213,9 @@ override fun observeAuthState(): Flow<AuthState> = callbackFlow {
 │    │     ├── userId: "user_xyz"                                 │
 │    │     ├── title: "Pasta Primavera"                           │
 │    │     ├── ingredients: ["pasta", "tomatoes", "basil"]        │
-│    │     ├── steps: ["Boil water", "Add pasta", ...]           │
+│    │     ├── steps: ["Boil water", "Add pasta", ...]            │
 │    │     ├── imageUri: "content://..."                          │
-│    │     ├── generatedImageUrl: "https://storage..."           │
+│    │     ├── generatedImageUrl: "https://storage..."            │
 │    │     └── createdAt: 1703520000000                           │
 │    │                                                            │
 │    └── def456 (Document)                                        │
@@ -369,16 +369,16 @@ service cloud.firestore {
 │                     Firebase Storage                            │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  gs://your-bucket.appspot.com/                                 │
+│  gs://your-bucket.appspot.com/                                  │
 │    │                                                            │
 │    └── recipe_images/                                           │
-│          ├── abc123.jpg  (Recipe ID as filename)               │
+│          ├── abc123.jpg  (Recipe ID as filename)                │
 │          ├── def456.jpg                                         │
 │          └── ghi789.jpg                                         │
 │                                                                 │
-│  [App] -- upload(bitmap) --> [Storage] -- returns --> [URL]    │
+│  [App] -- upload(bitmap) --> [Storage] -- returns --> [URL]     │
 │                                                                 │
-│  Download URL: https://firebasestorage.googleapis.com/...      │
+│  Download URL: https://firebasestorage.googleapis.com/...       │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -496,16 +496,16 @@ service firebase.storage {
 │  [Your App]              [Play Integrity]        [Firebase]     │
 │      │                         │                      │         │
 │      │ -- Get attestation ---> │                      │         │
-│      │ <-- Device token ---    │                      │         │
+│      │ <------- Device token --│                      │         │
 │      │                         │                      │         │
-│      │ -- Exchange token -----------------------> │         │
-│      │ <-- App Check token ------------------- │         │
+│      │ -- Exchange token ------------------------->   │         │
+│      │ <------------------- App Check token --------- │         │
 │      │                                                │         │
-│      │ -- API Request + App Check token --------> │         │
+│      │ -- API Request + App Check token ------------> │         │
 │      │                                                │         │
-│      │    (Firebase validates token before processing)         │
+│      │  (Firebase validates token before processing)  |         │
 │      │                                                │         │
-│      │ <-- Response ------------------------------- │         │
+│      │ <------------------------  Response  --------- │         |
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -592,15 +592,15 @@ Your App → Manage debug tokens → Add debug token
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  INPUT                              OUTPUT                      │
-│  ┌─────────────┐                   ┌─────────────┐             │
-│  │ Text        │                   │ Text        │             │
-│  │ "Analyze    │                   │ "This is    │             │
-│  │  this..."   │                   │  pasta..."  │             │
-│  └─────────────┘                   └─────────────┘             │
-│  ┌─────────────┐    ┌─────────┐    ┌─────────────┐             │
-│  │ Image       │ -> │ Gemini  │ -> │ Image       │             │
-│  │ (Bitmap)    │    │         │    │ (Bitmap)    │             │
-│  └─────────────┘    └─────────┘    └─────────────┘             │
+│  ┌─────────────┐                   ┌─────────────┐              │
+│  │ Text        │                   │ Text        │              │
+│  │ "Analyze    │                   │ "This is    │              │
+│  │  this..."   │                   │  pasta..."  │              │
+│  └─────────────┘                   └─────────────┘              │
+│  ┌─────────────┐    ┌─────────┐    ┌─────────────┐              │
+│  │ Image       │ -> │ Gemini  │ -> │ Image       │              │
+│  │ (Bitmap)    │    │         │    │ (Bitmap)    │              │
+│  └─────────────┘    └─────────┘    └─────────────┘              │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -748,12 +748,12 @@ override suspend fun generateRecipeImage(
 │    └── [0]: Candidate                                           │
 │          └── content: Content                                   │
 │                └── parts: List<Part>                            │
-│                      ├── [0]: TextPart("Here's your dish...")  │
-│                      └── [1]: ImagePart(bitmap: Bitmap)        │
+│                      ├── [0]: TextPart("Here's your dish...")   │
+│                      └── [1]: ImagePart(bitmap: Bitmap)         │
 │                                                                 │
 │  // Extract image:                                              │
 │  response.candidates[0].content.parts                           │
-│      .filterIsInstance<ImagePart>()                            │
+│      .filterIsInstance<ImagePart>()                             │
 │      .first().image  // Bitmap                                  │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -976,6 +976,8 @@ Implement a favorites feature that:
 - Provides a filtered view showing only favorites
 - Persists across sessions (stored in Firestore)
 
+---
+
 **Files to Modify:**
 - `domain/model/Recipe.kt`
 - `data/firebase/FirestoreRepository.kt`
@@ -1010,6 +1012,8 @@ Implement recipe sharing that:
 - Uses Android's native share sheet
 - Works with any app that accepts images
 
+---
+
 **Files to Modify:**
 - `ui/screens/RecipeDetailScreen.kt`
 - Create `util/ShareUtils.kt`
@@ -1038,33 +1042,26 @@ Implement recipe sharing that:
 
 ## Resources
 
-**Firebase Auth**
-*   [Firebase Auth Documentation](https://firebase.google.com/docs/auth)
-*   [Auth with Email/Password](https://firebase.google.com/docs/auth/android/password-auth)
-*   [Auth State Listener](https://firebase.google.com/docs/auth/android/manage-users)
-*   [Custom Auth Claims](https://firebase.google.com/docs/auth/admin/custom-claims)
-*   [Codelab: Firebase Auth](https://firebase.google.com/codelabs/firebase-android)
+| Firebase Auth | Cloud Firestore |
+|:--------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------|
+| [Firebase Auth Documentation](https://firebase.google.com/docs/auth)                              | [Firestore Documentation](https://firebase.google.com/docs/firestore)                             |
+| [Auth with Email/Password](https://firebase.google.com/docs/auth/android/password-auth)           | [Security Rules](https://firebase.google.com/docs/firestore/security/get-started)                 |
+| [Auth State Listener](https://firebase.google.com/docs/auth/android/manage-users)                 | [Realtime Listeners](https://firebase.google.com/docs/firestore/query-data/listen)                |
+| [Custom Auth Claims](https://firebase.google.com/docs/auth/admin/custom-claims)                   | [Offline Persistence](https://firebase.google.com/docs/firestore/manage-data/enable-offline)      |
+| [Codelab: Firebase Auth](https://firebase.google.com/codelabs/firebase-android)                   | [Composite Indexes](https://firebase.google.com/docs/firestore/query-data/indexing)               |
 
-**Cloud Firestore**
-*   [Firestore Documentation](https://firebase.google.com/docs/firestore)
-*   [Security Rules](https://firebase.google.com/docs/firestore/security/get-started)
-*   [Realtime Listeners](https://firebase.google.com/docs/firestore/query-data/listen)
-*   [Offline Persistence](https://firebase.google.com/docs/firestore/manage-data/enable-offline)
-*   [Composite Indexes](https://firebase.google.com/docs/firestore/query-data/indexing)
+---
 
-**Firebase Storage & App Check**
-*   [Storage Documentation](https://firebase.google.com/docs/storage)
-*   [Storage Security Rules](https://firebase.google.com/docs/storage/security)
-*   [App Check Overview](https://firebase.google.com/docs/app-check)
-*   [Debug Provider Setup](https://firebase.google.com/docs/app-check/android/debug-provider)
-*   [Play Integrity Integration](https://firebase.google.com/docs/app-check/android/play-integrity-provider)
+## Resources
 
-**Firebase AI Logic (Gemini)**
-*   [Firebase AI Logic Overview](https://firebase.google.com/docs/ai-logic)
-*   [Gemini API Quickstart](https://ai.google.dev/gemini-api/docs/quickstart)
-*   [Multimodal Prompting](https://ai.google.dev/gemini-api/docs/vision)
-*   [Image Generation with Gemini](https://ai.google.dev/gemini-api/docs/imagen)
-*   [Prompt Engineering Guide](https://ai.google.dev/gemini-api/docs/prompting-intro)
+| Firebase Storage & App Check | Firebase AI Logic (Gemini) |
+|:---------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------|
+| [Storage Documentation](https://firebase.google.com/docs/storage)                                        | [Firebase AI Logic Overview](https://firebase.google.com/docs/ai-logic)                             |
+| [Storage Security Rules](https://firebase.google.com/docs/storage/security)                              | [Gemini API Quickstart](https://ai.google.dev/gemini-api/docs/quickstart)                           |
+| [App Check Overview](https://firebase.google.com/docs/app-check)                                         | [Multimodal Prompting](https://ai.google.dev/gemini-api/docs/vision)                                |
+| [Debug Provider Setup](https://firebase.google.com/docs/app-check/android/debug-provider)                | [Image Generation with Gemini](https://ai.google.dev/gemini-api/docs/imagen)                        |
+| [Play Integrity Integration](https://firebase.google.com/docs/app-check/android/play-integrity-provider) | [Prompt Engineering Guide](https://ai.google.dev/gemini-api/docs/prompting-intro)                   |
+
 
 ---
 
