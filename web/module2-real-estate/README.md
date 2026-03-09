@@ -11,7 +11,7 @@
 | Dependencia | Version | Propósito |
 |-------------|---------|-----------|
 | **React** | 19.2.1 | Biblioteca UI Core |
-| **Vite** | 7.3.0 | Build tool & Dev Server |
+| **Vite** | 6.4.1 | Build tool & Dev Server |
 | **Tailwind CSS** | 4.1.8 | Framework de estilos (Motor v4) |
 | **Shadcn UI** | Manual | Componentes UI reutilizables |
 | **React Hook Form** | 7.54.2 | Gestión de estado de formularios |
@@ -240,14 +240,8 @@ module2-real-estate/
 cd web/module2-real-estate
 
 # Instalar dependencias
-npm install --legacy-peer-deps
+npm install
 ```
-
-> **Nota sobre --legacy-peer-deps**: Este flag es necesario porque algunas dependencias
-> (como @tailwindcss/vite y typescript-eslint) aun no declaran soporte para las versiones
-> mas recientes de Vite 7 y TypeScript 5.9. El flag permite instalar las dependencias
-> ignorando conflictos de peer dependencies. En la practica, las dependencias funcionan
-> correctamente con estas versiones.
 
 ### Comandos Disponibles
 

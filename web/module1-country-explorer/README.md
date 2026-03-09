@@ -10,8 +10,8 @@
 
 | Dependencia | Version |
 |-------------|---------|
-| TypeScript | 5.9.3 |
-| Vite | 7.3.0 |
+| TypeScript | ^5.7.0 |
+| Vite | ^6.0.0 |
 | Tailwind CSS | 4.1.8 |
 | @tailwindcss/vite | 4.1.8 |
 | ESLint | 9.17.0 |

@@ -33,8 +33,8 @@ Este documento registra las versiones exactas de las dependencias utilizadas en 
 
 | Paquete              | Version  | Proposito                                      |
 | -------------------- | -------- | ---------------------------------------------- |
-| typescript           | 5.9.3    | Lenguaje con tipado estatico                   |
-| vite                 | 7.3.0    | Bundler y servidor de desarrollo               |
+| typescript           | 5.7.3    | Lenguaje con tipado estatico                   |
+| vite                 | 6.4.1    | Bundler y servidor de desarrollo               |
 | @vitejs/plugin-react | 4.3.4    | Plugin React para Vite                         |
 | tailwindcss          | 4.1.8    | Framework CSS utility-first (v4)               |
 | @tailwindcss/vite    | 4.1.8    | Plugin de Vite para Tailwind v4                |
@@ -43,7 +43,7 @@ Este documento registra las versiones exactas de las dependencias utilizadas en 
 | prettier             | 3.4.2    | Formateador de codigo                          |
 | @types/react         | 19.2.1   | Tipos de TypeScript para React                 |
 | @types/react-dom     | 19.2.1   | Tipos de TypeScript para React DOM             |
-| @types/node          | 22.10.2  | Tipos de TypeScript para Node.js               |
+| @types/node          | 22.12.0  | Tipos de TypeScript para Node.js               |
 
 ---
 

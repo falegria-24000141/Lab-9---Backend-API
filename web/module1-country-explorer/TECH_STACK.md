@@ -10,14 +10,14 @@ Este documento registra las versiones exactas de las dependencias utilizadas en 
 
 | Paquete              | Version  | Proposito                                      |
 | -------------------- | -------- | ---------------------------------------------- |
-| typescript           | 5.9.3    | Lenguaje con tipado estatico                   |
-| vite                 | 7.3.0    | Bundler y servidor de desarrollo               |
+| typescript           | ^5.7.0   | Lenguaje con tipado estatico                   |
+| vite                 | ^6.0.0   | Bundler y servidor de desarrollo               |
 | tailwindcss          | 4.1.8    | Framework CSS utility-first (v4)               |
 | @tailwindcss/vite    | 4.1.8    | Plugin de Vite para Tailwind v4                |
 | eslint               | 9.17.0   | Linter para JavaScript/TypeScript              |
 | typescript-eslint    | 8.18.2   | Plugin de ESLint para TypeScript               |
 | prettier             | 3.4.2    | Formateador de codigo                          |
-| @types/node          | 22.10.2  | Tipos de TypeScript para Node.js               |
+| @types/node          | 22.12.0  | Tipos de TypeScript para Node.js               |
 
 ---
 
@@ -31,12 +31,12 @@ Este documento registra las versiones exactas de las dependencias utilizadas en 
 - **Utilidades personalizadas**: `@utility` reemplaza `@layer utilities`
 - **Performance**: Builds hasta 10x más rápidos que v3
 
-### TypeScript 5.9.3
+### TypeScript ^5.7.0
 
-- Version estable mas reciente de la rama 5.9.x
+- Version estable de la rama 5.7.x+
 - Caracteristicas utilizadas: strict mode, discriminated unions, template literal types
 
-### Vite 7.3.0
+### Vite ^6.0.0
 
 - Bundler ultrarapido con HMR nativo
 - Integracion directa con `@tailwindcss/vite`
