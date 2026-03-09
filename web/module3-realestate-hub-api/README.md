@@ -51,8 +51,8 @@ module3-realestate-hub-api/
 | Dependencia | Version |
 |-------------|---------|
 | React | 19.2.1 |
-| Vite | 7.3.0 |
-| TypeScript | 5.9.3 |
+| Vite | 7.3.0 (*) |
+| TypeScript | ^5.7.0 |
 | Tailwind CSS | 4.1.8 |
 
 ---
@@ -260,10 +260,11 @@ Ver [backend/API_CONTRACT.md](./backend/API_CONTRACT.md) para documentacion deta
 
 ## Notas sobre Instalacion
 
-> **Sobre --legacy-peer-deps**: Este flag es necesario porque algunas dependencias
-> aun no declaran soporte para las versiones mas recientes de TypeScript 5.9,
-> Prisma 7, y Vite 7. El flag permite instalar las dependencias ignorando
-> conflictos de peer dependencies. Las dependencias funcionan correctamente.
+> **Sobre --legacy-peer-deps**: Este flag es necesario en el frontend porque
+> `vite@7.3.0` no es compatible con los peer dependencies de `@tailwindcss/vite`
+> y `@vitejs/plugin-react` (que soportan hasta vite 6.x). El flag permite
+> instalar ignorando estos conflictos. Alternativamente, se puede bajar vite
+> a `6.4.1` como se hizo en el módulo 2.
 
 ---
 

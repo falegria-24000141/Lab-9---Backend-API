@@ -13,10 +13,13 @@ Este documento registra las versiones exactas de las dependencias utilizadas en 
 | next                       | 16.1.1   | Framework React fullstack                      |
 | react                      | 19.2.1   | Biblioteca UI                                  |
 | react-dom                  | 19.2.1   | Renderizado React para DOM                     |
-| firebase                   | 12.7.0   | SDK cliente de Firebase                        |
-| firebase-admin             | 13.0.2   | SDK admin de Firebase (servidor)               |
-| @google/genai              | 1.34.0   | SDK de Google Gemini AI                        |
+| firebase                   | ^12.7.0  | SDK cliente de Firebase                        |
+| firebase-admin             | ^13.6.0  | SDK admin de Firebase (servidor)               |
+| firebase-admin-auth        | ^1.0.0   | Utilidad de autenticacion Firebase Admin        |
+| react-firebase-hooks       | ^5.1.1   | Hooks de React para Firebase                   |
+| @google/genai              | ^1.34.0  | SDK de Google Gemini AI                        |
 | zod                        | 4.1.9    | Validacion de esquemas en runtime              |
+| @radix-ui/react-alert-dialog | ^1.1.15 | Componente Alert Dialog accesible              |
 | @radix-ui/react-dialog     | 1.1.4    | Componente Dialog accesible                    |
 | @radix-ui/react-label      | 2.1.1    | Componente Label accesible                     |
 | @radix-ui/react-select     | 2.1.4    | Componente Select accesible                    |

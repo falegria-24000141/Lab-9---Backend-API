@@ -4,6 +4,8 @@
 
 > Evolución de EventPass con autenticación, base de datos en la nube e inteligencia artificial.
 
+**Deploy:** https://event-pass-pro-tau.vercel.app/
+
 ---
 
 ## Stack Tecnologico
@@ -14,9 +16,9 @@
 | React | 19.2.1 |
 | TypeScript | 5.9.3 |
 | Tailwind CSS | 4.1.8 |
-| Firebase | 12.7.0 |
-| Firebase Admin | 13.6.0 |
-| @google/genai | 1.34.0 |
+| Firebase | ^12.7.0 |
+| Firebase Admin | ^13.6.0 |
+| @google/genai | ^1.34.0 |
 | Zod | 4.1.9 |
 
 > Ver [TECH_STACK.md](./TECH_STACK.md) para detalles completos.
