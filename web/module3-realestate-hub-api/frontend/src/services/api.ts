@@ -43,7 +43,7 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
     const data = (await response.json()) as ApiResponse<T> | { success: false; error: { message: string } };
 
     if (!response.ok || !data.success) {
-        const message = !data.success ? data.error.message : 'Error desconocido';
+        const message = !data.success && data.error ? data.error.message : 'Error desconocido';
         throw new ApiError(response.status, message);
     }
 

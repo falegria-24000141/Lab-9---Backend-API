@@ -8,7 +8,7 @@
 // La ruta /property/:id define un parámetro dinámico 'id'.
 // =============================================================================
 
-import type React from 'react';
+import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Bed, Bath, Square, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
