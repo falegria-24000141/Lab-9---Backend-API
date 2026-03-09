@@ -27,6 +27,14 @@
 
 **Real Estate React** es una aplicación web de bienes raíces que permite listar, buscar y gestionar propiedades inmobiliarias. El proyecto implementa las últimas tecnologías frontend disponibles (React 19, Tailwind v4) para ofrecer una experiencia de desarrollo moderna y eficiente.
 
+### Vistas de la Aplicación
+
+#### Listado de Propiedades
+![Listado de Propiedades](./assets/property-list.png)
+
+#### Detalle de Propiedad
+![Detalle de Propiedad](./assets/property-detail.png)
+
 Concepts clave implementados:
 
 1.  **Tailwind CSS v4**: Configuración nativa CSS sin `tailwind.config.js`. Las variables de tema se definen directamente en CSS usando `@theme`.

@@ -44,7 +44,11 @@ We are building a Real Estate listing application with React.
 
 ---
 
-![height:500px center](assets/app_screenshot.png)
+![height:450px center](assets/property-list.png)
+
+---
+
+![height:450px center](assets/property-detail.png)
 
 ---
 
