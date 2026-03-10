@@ -4,6 +4,9 @@
 
 > Proyecto completo con backend Express/Prisma y frontend React que lo consume.
 
+**Backend (Cloud Run):** https://module3-backend-334687871.us-central1.run.app
+**Frontend (Vercel):** https://module3-realestate.vercel.app
+
 ---
 
 ## Estructura del Proyecto
