@@ -10,14 +10,15 @@
 // - Hooks mejorados
 // =============================================================================
 
-import type React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Square, Tag } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Tag, GitCompare } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { Property } from '@/types/property';
 import { PROPERTY_TYPE_LABELS, OPERATION_TYPE_LABELS } from '@/types/property';
 import { formatPrice, formatArea, truncateText } from '@/lib/utils';
+import { toast } from 'sonner';
 
 /**
  * Props del componente PropertyCard.
@@ -35,15 +36,52 @@ interface PropertyCardProps {
  * - Título y ubicación
  * - Características (habitaciones, baños, área)
  * - Precio
- * - Acciones (ver, editar, eliminar)
+ * - Acciones (ver, editar, eliminar, comparar)
  *
  * @param property - Datos de la propiedad
  * @param onDelete - Callback opcional para eliminar
  */
 export function PropertyCard({ property, onDelete }: PropertyCardProps): React.ReactElement {
+  const [isCompared, setIsCompared] = useState(false);
+
+  // Efecto para verificar si esta propiedad ya está en la lista de comparación
+  useEffect(() => {
+    const saved = localStorage.getItem('compare-list');
+    if (saved) {
+      const list: Property[] = JSON.parse(saved);
+      setIsCompared(list.some(p => p.id === property.id));
+    }
+  }, [property.id]);
+
+  /**
+   * Maneja la lógica de agregar/quitar de la comparación (Máximo 3)
+   */
+  const handleToggleCompare = (e: React.MouseEvent) => {
+    e.preventDefault(); // Evita navegación si el botón estuviera dentro de un link
+    
+    const saved = localStorage.getItem('compare-list');
+    let list: Property[] = saved ? JSON.parse(saved) : [];
+
+    if (isCompared) {
+      // Quitar de la lista
+      list = list.filter(p => p.id !== property.id);
+      setIsCompared(false);
+      toast.info("Propiedad eliminada de la comparativa");
+    } else {
+      // Agregar a la lista (Validando el límite de 3)
+      if (list.length >= 3) {
+        toast.error("Solo puedes comparar hasta 3 propiedades a la vez");
+        return;
+      }
+      list.push(property);
+      setIsCompared(true);
+      toast.success("Propiedad añadida a la comparativa");
+    }
+
+    localStorage.setItem('compare-list', JSON.stringify(list));
+  };
+
   // Uso de Optional Chaining (?.) y Nullish Coalescing (??)
-  // 1. property.images?.[0] -> Si images es null/undefined, devuelve undefined sin lanzar error
-  // 2. ?? -> Si lo anterior es null/undefined, usa el placeholder
   const imageUrl =
     property.images?.[0] ?? `https://placehold.co/800x600/e2e8f0/64748b?text=${encodeURIComponent(property.propertyType)}`;
 
@@ -120,6 +158,17 @@ export function PropertyCard({ property, onDelete }: PropertyCardProps): React.R
         {/* Botón ver detalles */}
         <Button asChild className="flex-1">
           <Link to={`/property/${property.id}`}>Ver detalles</Link>
+        </Button>
+
+        {/* Botón comparar (Challenge Lab) */}
+        <Button
+          variant={isCompared ? "secondary" : "outline"}
+          size="icon"
+          onClick={handleToggleCompare}
+          title={isCompared ? "Quitar de comparar" : "Añadir a comparar"}
+          className={isCompared ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-200" : ""}
+        >
+          <GitCompare className="h-4 w-4" />
         </Button>
 
         {/* Botón eliminar (si se proporciona callback) */}

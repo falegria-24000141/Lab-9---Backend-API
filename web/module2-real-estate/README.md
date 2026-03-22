@@ -344,3 +344,5 @@ Este proyecto es de uso educativo y fue creado como material de aprendizaje.
 ## Créditos
 
 > Este proyecto ha sido generado usando Claude Code y adaptado con fines educativos por Adrián Catalán.
+#   L a b - 8 - - - F r o n t e n d - S P A -  
+ 

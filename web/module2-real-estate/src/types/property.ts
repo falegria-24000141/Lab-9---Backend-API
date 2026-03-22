@@ -260,3 +260,13 @@ export const AMENITY_LABELS: Record<Amenity, string> = {
   calefaccion: 'Calefacción',
   amueblado: 'Amueblado',
 };
+
+/**
+ * Tipo para manejar las métricas de comparación
+ */
+export interface PropertyComparisonMetrics {
+  isBestPrice: boolean;
+  isBestArea: boolean;
+  isBestPricePerSqm: boolean;
+  pricePerSqm: number;
+}
