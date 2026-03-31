@@ -42,6 +42,9 @@ const router = Router();
  * - minPrice, maxPrice: Rango de precios
  * - minBedrooms: Habitaciones mínimas
  * - city: Filtro por ciudad
+ * 
+ * - page: Número de página (default: 1)
+ * - limit: Cantidad de resultados por página (default: 10)
  */
 router.get('/', (req, res) => {
   void getAllProperties(req, res);

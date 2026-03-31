@@ -35,7 +35,27 @@ import { propertyRepository } from '../repositories/propertyRepository.js';
 
 export async function getAllProperties(req: Request, res: Response): Promise<void> {
   try {
-    // Extraemos filtros de los query params
+
+    // 1. Extraemos y validamos parámetros de paginación
+    const pageParam = req.query.page as string | undefined;
+    const limitParam = req.query.limit as string | undefined;
+
+    const page = pageParam ? parseInt(pageParam, 10) : 1;
+    const limit = limitParam ? parseInt(limitParam, 10) : 10;
+
+    // Validación: Rechazar negativos o letras
+    if (Number.isNaN(page) || page < 1 || Number.isNaN(limit) || limit < 1) {
+      res.status(400).json({
+        success: false,
+        error: {
+          message: "Los parámetros page y limit deben ser números mayores a 0",
+          code: "VALIDATION_ERROR",
+        },
+      });
+      return;
+    }
+
+    //2. Extraemos filtros de los query params
     const filters: PropertyFilters = {
       search: req.query.search as string | undefined,
       propertyType: req.query.propertyType as PropertyFilters['propertyType'],
@@ -46,13 +66,30 @@ export async function getAllProperties(req: Request, res: Response): Promise<voi
       city: req.query.city as string | undefined,
     };
 
-    // Delegamos al repositorio
+    //3. Delegamos al repositorio
     const properties = await propertyRepository.findAll(filters);
 
+    // 4. Lógica matemática de paginación
+    const total = properties.length;
+    const pages = Math.ceil(total / limit);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    // Cortamos el arreglo original para obtener solo la página actual
+    const paginatedData = properties.slice(startIndex, endIndex);
+
+    // 5. Enviamos la respuesta incluyendo 'meta'
     res.json({
       success: true,
-      data: properties,
-    });
+      data: paginatedData,
+    meta: {
+        total,
+        page,
+        limit,
+        pages,
+      },
+    } as any); // Usamos 'as any' porque no modificamos la interface de TypeScript
   } catch (error) {
     console.error('Error al obtener propiedades:', error);
     res.status(500).json({
@@ -73,7 +110,7 @@ export async function getPropertyById(req: Request, res: Response): Promise<void
   try {
     const { id } = req.params;
 
-    const property = await propertyRepository.findById(id);
+    const property = await propertyRepository.findById(id as string);
 
     if (!property) {
       res.status(404).json({
@@ -168,7 +205,7 @@ export async function updateProperty(req: Request, res: Response): Promise<void>
     }
 
     // Delegamos la actualización al repositorio
-    const property = await propertyRepository.update(id, validationResult.data);
+const property = await propertyRepository.update(id as string, validationResult.data);
 
     if (!property) {
       res.status(404).json({
@@ -206,7 +243,7 @@ export async function deleteProperty(req: Request, res: Response): Promise<void>
     const { id } = req.params;
 
     // Delegamos la eliminación al repositorio
-    const deleted = await propertyRepository.delete(id);
+    const deleted = await propertyRepository.delete(id as string);
 
     if (!deleted) {
       res.status(404).json({

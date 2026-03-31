@@ -18,6 +18,7 @@
 
 import { Search } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { EVENT_CATEGORIES, CATEGORY_LABELS, EVENT_STATUSES, STATUS_LABELS, type EventCategory } from '@/types/event';
@@ -38,6 +39,11 @@ interface EventFiltersFormProps {
  */
 export function EventFiltersForm({ currentFilters }: EventFiltersFormProps): React.ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
+  
+  // Instanciar enrutador
+  const router = useRouter();
+  // Obtener ruta
+  const pathname = usePathname();
 
   // Estado local para el input de búsqueda
   const [searchTerm, setSearchTerm] = useState(currentFilters.search ?? '');
@@ -73,10 +79,27 @@ export function EventFiltersForm({ currentFilters }: EventFiltersFormProps): Rea
     setSearchTerm(e.target.value);
   };
 
+  // Interceptar envio
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    // Obtener datos
+    const formData = new FormData(e.currentTarget);
+    // Construir parametros
+    const params = new URLSearchParams();
+    
+    formData.forEach((value, key) => {
+      if (value) params.append(key, value.toString());
+    });
+
+    // Actualizar URL
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
   return (
     <div className="space-y-4 rounded-lg border bg-card p-4">
       {/* Formulario con method GET */}
-      <form ref={formRef} method="GET" action="/events" className="space-y-4">
+      <form ref={formRef} method="GET" action="/events" onSubmit={handleSubmit} className="space-y-4">
         {/* Búsqueda */}
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -142,7 +165,7 @@ export function EventFiltersForm({ currentFilters }: EventFiltersFormProps): Rea
 
           {/* Botón limpiar */}
           {hasFilters && (
-            <Link href="/events">
+            <Link href="/events" scroll={false}>
               <Button type="button" variant="ghost" className="gap-2">
                 Limpiar filtros
               </Button>
