@@ -1,24 +1,22 @@
 // =============================================================================
-// COMPONENTE REGISTER BUTTON - Module 4: Event Pass
+// COMPONENTE REGISTER BUTTON
 // =============================================================================
-// Botón para registrarse en un evento con actualización optimista.
+// Botón registro
 //
-// ## useOptimistic (React 19)
-// Este hook permite actualizar la UI inmediatamente antes de que
-// la operación del servidor complete. Si falla, React revierte
-// automáticamente al estado anterior.
+// Hook React 19
+// Actualización inmediata
 //
-// ## Patrón de Actualización Optimista
-// 1. Usuario hace clic
-// 2. UI se actualiza inmediatamente (optimistic)
-// 3. Server Action se ejecuta
-// 4. Si falla, UI se revierte automáticamente
-// 5. Si éxito, estado se confirma
+// Patrón optimista
+// 1. Clic usuario
+// 2. Update inmediato
+// 3. Acción servidor
+// 4. Revierte error
+// 5. Confirma éxito
 // =============================================================================
 
 'use client';
 
-import { useOptimistic, useTransition } from 'react';
+import { useOptimistic, useTransition, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { registerForEventAction } from '@/actions/eventActions';
 import { Loader2, CheckCircle } from 'lucide-react';
@@ -30,94 +28,88 @@ interface RegisterButtonProps {
   isAvailable: boolean;
 }
 
-/**
- * Botón de registro con actualización optimista.
- *
- * ## Flujo
- * 1. Al hacer clic, `addOptimistic` actualiza spots inmediatamente (-1)
- * 2. `startTransition` inicia la Server Action
- * 3. Mientras pending=true, mostramos spinner
- * 4. Si falla, React revierte automáticamente
- */
+// Renderiza botón
 export function RegisterButton({
   eventId,
   availableSpots,
   isAvailable,
 }: RegisterButtonProps): React.ReactElement {
-  /**
-   * useTransition permite marcar actualizaciones como no urgentes.
-   * isPending indica si hay una transición en progreso.
-   */
+  
+  // Estado transición
   const [isPending, startTransition] = useTransition();
 
-  /**
-   * useOptimistic crea un estado optimista.
-   *
-   * @param initialValue - Valor inicial (plazas disponibles)
-   * @param reducer - Función que calcula el nuevo valor optimista
-   */
+  // Estado error
+  const [error, setError] = useState<string | null>(null);
+
+  // Estado optimista
   const [optimisticSpots, addOptimistic] = useOptimistic(
     availableSpots,
-    // Reducer: cuando se registra, restamos 1
-    (currentSpots: number, _action: 'register') => Math.max(0, currentSpots - 1)
+    // Resta plazas
+    (currentSpots: number) => Math.max(0, currentSpots - 1)
   );
 
-  // Estado derivado
-  const showRegistered = optimisticSpots < availableSpots;
+  // Variables estado
+  const showRegistered = optimisticSpots < availableSpots && !error;
   const canRegister = isAvailable && optimisticSpots > 0 && !showRegistered;
 
-  /**
-   * Handler del registro.
-   */
-  async function handleRegister(): Promise<void> {
-    // 1. Actualización optimista inmediata
+  // Maneja registro
+  function handleRegister(): void {
+    // Limpia errores
+    setError(null);
+    
+    // Update optimista
     addOptimistic('register');
 
-    // 2. Ejecutar Server Action en una transición
+    // Acción servidor
     startTransition(async () => {
       const result = await registerForEventAction(eventId);
 
       if (!result.success) {
-        // Si falla, podríamos mostrar un toast de error
-        // El estado optimista se revierte automáticamente
-        console.error('Error al registrar:', result.message);
+        // Muestra error
+        setError(result.message || 'Fallo al registrar');
       }
     });
   }
 
-  // Si ya se registró (optimísticamente)
+  // Ya registrado
   if (showRegistered) {
     return (
       <Button variant="secondary" disabled className="w-full gap-2">
         <CheckCircle className="h-4 w-4" />
-        ¡Registrado!
+        Registrado
       </Button>
     );
   }
 
-  // Si no hay plazas
+  // Sin plazas
   if (!canRegister) {
     return (
-      <Button variant="secondary" disabled className="w-full">
-        {optimisticSpots === 0 ? 'Evento Agotado' : 'No disponible'}
-      </Button>
+      <div className="w-full flex flex-col gap-2">
+        <Button variant="secondary" disabled className="w-full">
+          {optimisticSpots === 0 ? 'Evento Agotado' : 'No disponible'}
+        </Button>
+        {error && <span className="text-red-500 text-sm text-center">{error}</span>}
+      </div>
     );
   }
 
   return (
-    <Button
-      onClick={handleRegister}
-      disabled={isPending}
-      className={cn('w-full gap-2', isPending && 'cursor-wait')}
-    >
-      {isPending ? (
-        <>
-          <Loader2 className="h-4 w-4 animate-spin" />
-          Registrando...
-        </>
-      ) : (
-        `Registrarme (${optimisticSpots} plazas)`
-      )}
-    </Button>
+    <div className="w-full flex flex-col gap-2">
+      <Button
+        onClick={handleRegister}
+        disabled={isPending}
+        className={cn('w-full gap-2', isPending && 'cursor-wait')}
+      >
+        {isPending ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Registrando
+          </>
+        ) : (
+          `Registrarme (${optimisticSpots} plazas)`
+        )}
+      </Button>
+      {error && <span className="text-red-500 text-sm text-center">{error}</span>}
+    </div>
   );
 }
