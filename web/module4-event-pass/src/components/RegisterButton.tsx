@@ -56,12 +56,12 @@ export function RegisterButton({
   function handleRegister(): void {
     // Limpia errores
     setError(null);
-    
-    // Update optimista
-    addOptimistic('register');
 
     // Acción servidor
     startTransition(async () => {
+      // FIX: El update optimista DEBE ir DENTRO de la transición en React 19
+      addOptimistic('register');
+
       const result = await registerForEventAction(eventId);
 
       if (!result.success) {
